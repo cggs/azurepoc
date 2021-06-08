@@ -35,4 +35,21 @@ public class SpanishGreetingController {
     public void createSpanishGreeting(@RequestBody SpanishGreeting spanishGreeting) {
         spanishGreetings.add(spanishGreeting);
     }
+
+    @PostMapping("/token")
+    @ResponseStatus(HttpStatus.OK)
+    public PartnerToken CreateToken(@RequestBody PartnerToken ptoken) {
+        String newtoken =ptoken.generateJWTToken(ptoken.getPartnerId());
+        ptoken.setToken(newtoken);
+        return ptoken;
+    }
+
+    @PostMapping("/token/validate")
+    @ResponseStatus(HttpStatus.OK) 
+    public String VerifyToken(@RequestBody PartnerToken ptoken) {
+        String verifytoken =ptoken.verifyJWTToken(ptoken.getToken(),ptoken.getPartnerId());
+        return verifytoken;
+    }
+
+
 }
